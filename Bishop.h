@@ -6,7 +6,7 @@
 
 class Bishop : public Piece {
 
-  public:
+public:
 
     /**
      * @brief Construct a new Bishop object
