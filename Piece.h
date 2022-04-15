@@ -15,7 +15,7 @@ class Piece {
      * @brief Color properties for the piece (black or white)
      */
     enum struct Color {
-        black, white
+      black, white
     };
 
 

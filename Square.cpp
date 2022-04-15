@@ -23,3 +23,17 @@ Piece* Square::occupant() const {
 void Square::set_occupant(Piece* occupant) {
     this->_occupant = occupant;
 }
+
+
+std::ostream& operator<<(std::ostream& os, const Square& square) {
+    // if there is a piece on the square
+    if (square.is_occupied()) {
+        os << square.occupant()->str();
+    }
+    // if there is no piece on the square
+    else {
+        os << " ";
+    }
+
+    return os;
+}

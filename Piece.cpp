@@ -6,14 +6,11 @@
 using std::cout;
 using std::to_string;
 
-piece_value_t Piece::value() const {
-    return 0;
-}
-
 
 Piece::Color Piece::color() const {
     return this->_color;
 }
+
 
 Square* Piece::location() const {
     return this->_location;
@@ -21,7 +18,18 @@ Square* Piece::location() const {
 
 
 void Piece::set_location(Square* location) {
+
+    // define variable for the old location
+    Square* old_location = this->_location;
+
+    location->set_occupant(this);
     this->_location = location;
+    this->location()->set_occupant(location->occupant());
+
+    // if the old location is not null, remove the piece from it
+    if (old_location != nullptr) {
+        old_location->set_occupant(nullptr);
+    }
 }
 
 
@@ -30,24 +38,26 @@ bool Piece::is_on_square() const {
 }
 
 
-bool can_move_to(const Square& location) {
-    return false;
-}
-
-
 bool Piece::move_to(Square& location) {
 
     bool result = false;
 
-    if (this->can_move_to(location)) {
-        this->_location = &location;
-        result = true;
+    // if the piece is on a square
+    if (this->is_on_square()) {
+        // if the piece is not trying to move to the same square
+        if (this->_location != &location) {
+            // if the piece is trying to move to a square that is not occupied
+            if (!location.is_occupied()) {
+
+                // if can be moved to the square
+                if (this->can_move_to(location)) {
+                    // move the piece to the square
+                    this->set_location(&location);
+                    result = true;
+                }
+            }
+        }
     }
 
     return result;
-}
-
-
-std::string Piece::str() const {
-    return "Piece";
 }

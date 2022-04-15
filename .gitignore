@@ -9,3 +9,5 @@
 cmake-build-*/
 
 .vscode/
+main.dSYM/
+main.o.dSYM

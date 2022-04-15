@@ -17,7 +17,7 @@ class Board {
 
     
     /**
-     * @brief REturn square ref at the rank and file
+     * @brief Return square ref at the rank and file
      *
      * @param rank the row of the board
      * @param file the col of the board
