@@ -67,4 +67,8 @@ int main() {
 
     // white_pawns[5]->Piece::move_to(board.square_at(2, 5));
     std::cout << board << std::endl;
+
+    std::cout << board.is_clear_rank(Square(1, 1), Square(2, 1)) << std::endl;
+    std::cout << board.is_clear_file(Square(1, 1), Square(1, 2)) << std::endl;
+    std::cout << board.is_clear_diag(Square(1, 1), Square(2, 2)) << std::endl;
 }
