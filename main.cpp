@@ -58,12 +58,13 @@ int main() {
     // white_king->Piece::move_to(board.square_at(1, 4));
 
     // set queen to square at (2, 3)
-    // white_queen->set_location(&board.square_at(2, 3));
-    cout << white_queen->Piece::location() << endl;
+    white_pawns[0]->Piece::move_to(board.square_at(2, 0));
+    black_pawns[0]->Piece::move_to(board.square_at(5, 0));
+    black_pawns[0]->Piece::move_to(board.square_at(5, 3));
+    black_pawns[0]->Piece::move_to(board.square_at(4, 0));
+    black_pawns[0]->Piece::move_to(board.square_at(3, 0));
+    black_pawns[0]->Piece::move_to(board.square_at(2, 0));
 
-    // white_queen->Piece::move_to(board.square_at(4,7));
-    cout << white_queen->Piece::location() << endl;
-    cout << &board.square_at(4,7) << endl;
-
+    // white_pawns[5]->Piece::move_to(board.square_at(2, 5));
     std::cout << board << std::endl;
 }

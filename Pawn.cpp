@@ -15,11 +15,21 @@ bool Pawn::can_move_to(const Square& location) const {
     if (this->is_on_square()) {
 
         Square& currentRef = *this->location();
-        
+
         // rank must go up and file stay the same
-        if (location.rank() == currentRef.rank() + 1 &&
-            location.file() == currentRef.file()) {
-            result = true;
+        // if piece is white, rank must go up
+        if (this->color() == Piece::Color::white) {
+            if (location.rank() == currentRef.rank() + 1 &&
+                location.file() == currentRef.file()) {
+                result = true;
+            }
+        }
+        // if piece is black, rank must go down
+        else {
+            if (location.rank() == currentRef.rank() - 1 &&
+                location.file() == currentRef.file()) {
+                result = true;
+            }
         }
     }
 
