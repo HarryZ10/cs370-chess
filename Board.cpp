@@ -42,7 +42,7 @@ bool Board::is_clear_rank(const Square& from, const Square& to) const {
     
     // Rank is valid if it is between 0 and 7
     if (from.rank() >= 0 && from.rank() <= 7 && to.rank() >= 0 && to.rank() <= 7) {
-        if (!from.is_occupied() && !to.is_occupied()) {
+        if (!to.is_occupied()) {
             
             result = true;
         }
@@ -61,7 +61,7 @@ bool Board::is_clear_file(const Square& from, const Square& to) const {
 
     // File is valid if it is between 0 and 7
     if (from.file() >= 0 && from.file() <= 7 && to.file() >= 0 && to.file() <= 7) {
-        if (!from.is_occupied() && !to.is_occupied()) {
+        if (!to.is_occupied()) {
             
             result = true;
         }
@@ -81,7 +81,7 @@ bool Board::is_clear_diag(const Square& from, const Square& to) const {
     // check if valid diagonal (must have slope)
     if (from.rank() >= 0 && from.rank() <= 7 && from.file() >= 0 && from.file() <= 7 &&
         to.rank() >= 0 && to.rank() <= 7 && to.file() >= 0 && to.file() <= 7) {
-        if (!from.is_occupied() && !to.is_occupied()) {
+        if (!to.is_occupied()) {
             // check if valid diagonal (must have slope)
             result = true;
         }
