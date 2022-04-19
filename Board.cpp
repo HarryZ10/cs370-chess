@@ -44,10 +44,7 @@ bool Board::is_clear_rank(const Square& from, const Square& to) const {
     if (from.rank() >= 0 && from.rank() <= 7 && to.rank() >= 0 && to.rank() <= 7) {
         if (!from.is_occupied() && !to.is_occupied()) {
             
-            // The rank is clear if the rank of the from square is the same as the to square
-            if (from.rank() == to.rank()) {
-                result = true;
-            }
+            result = true;
         }
     }
 
@@ -66,13 +63,7 @@ bool Board::is_clear_file(const Square& from, const Square& to) const {
     if (from.file() >= 0 && from.file() <= 7 && to.file() >= 0 && to.file() <= 7) {
         if (!from.is_occupied() && !to.is_occupied()) {
             
-            // Check if the rank is the same
-            if (from.rank() == to.rank()) {
-                result = false;
-            }
-            else {
-                result = true;
-            }
+            result = true;
         }
     }
 
@@ -92,9 +83,7 @@ bool Board::is_clear_diag(const Square& from, const Square& to) const {
         to.rank() >= 0 && to.rank() <= 7 && to.file() >= 0 && to.file() <= 7) {
         if (!from.is_occupied() && !to.is_occupied()) {
             // check if valid diagonal (must have slope)
-            if (abs(int(from.rank()) - int(to.rank())) == abs(int(from.file()) - int(to.file()))) {
-                result = true;
-            }
+            result = true;
         }
     }
 

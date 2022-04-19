@@ -72,6 +72,7 @@ int main() {
     std::cout << board.is_clear_file(board.square_at(1, 1), board.square_at(1, 2)) << std::endl;
     std::cout << "2,0 occupied? " << board.square_at(2, 0).is_occupied() << std::endl;
     std::cout << "3,0 occupied? " << board.square_at(3, 0).is_occupied() << std::endl;
-    // std::cout << board.square_at(3, 0).occupant()->value() << std::endl;
-    std::cout << board.is_clear_file(board.square_at(2, 0), board.square_at(3, 0)) << std::endl;
+    std::cout << board.square_at(3, 0).occupant()->str() << std::endl;
+    std::cout << board.square_at(2, 0).occupant()->str() << std::endl;
+    std::cout << board.is_clear_rank(board.square_at(2, 0), board.square_at(3, 0)) << std::endl;
 }
