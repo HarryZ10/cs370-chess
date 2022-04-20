@@ -34,9 +34,9 @@ int main() {
     // makea list of white pawns
     std::vector<Pawn*> white_pawns;
 
-    for (int i = 0; i < 8; i++) {
-        white_pawns.push_back(new Pawn(Piece::Color::white, board.square_at(1, i)));
-    }
+    // for (int i = 0; i < 8; i++) {
+    //     white_pawns.push_back(new Pawn(Piece::Color::white, board.square_at(1, i)));
+    // }
 
     King *black_king = new King(Piece::Color::black, board.square_at(7, 3));
     Queen *black_queen = new Queen(Piece::Color::black, board.square_at(7, 4));
@@ -58,21 +58,11 @@ int main() {
     // white_king->Piece::move_to(board.square_at(1, 4));
 
     // set queen to square at (2, 3)
-    white_pawns[0]->Piece::move_to(board.square_at(2, 0));
-    black_pawns[0]->Piece::move_to(board.square_at(5, 0));
-    black_pawns[0]->Piece::move_to(board.square_at(5, 3));
-    black_pawns[0]->Piece::move_to(board.square_at(4, 0));
-    black_pawns[0]->Piece::move_to(board.square_at(3, 0));
-    black_pawns[0]->Piece::move_to(board.square_at(2, 0));
 
     // white_pawns[5]->Piece::move_to(board.square_at(2, 5));
     std::cout << board << std::endl;
 
-    std::cout << board.is_clear_rank(board.square_at(1, 1), board.square_at(2, 1)) << std::endl;
-    std::cout << board.is_clear_file(board.square_at(1, 1), board.square_at(1, 2)) << std::endl;
     std::cout << "2,0 occupied? " << board.square_at(2, 0).is_occupied() << std::endl;
     std::cout << "3,0 occupied? " << board.square_at(3, 0).is_occupied() << std::endl;
-    std::cout << board.square_at(3, 0).occupant()->str() << std::endl;
-    std::cout << board.square_at(2, 0).occupant()->str() << std::endl;
-    std::cout << board.is_clear_rank(board.square_at(2, 0), board.square_at(3, 0)) << std::endl;
+    std::cout << board.is_clear_diag(board.square_at(0, 2), board.square_at(5, 7)) << std::endl;
 }
