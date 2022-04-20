@@ -85,6 +85,12 @@ class Piece {
 
 
     /**
+     * @brief Captures the piece
+     */
+    void capture();
+
+
+    /**
      * @brief Returns the string representation for the piece
      * @return the string representaiton of the object piece 
      */

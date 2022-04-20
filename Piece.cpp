@@ -39,8 +39,13 @@ bool Piece::is_on_square() const {
 }
 
 
-bool Piece::move_to(Square& location) {
+bool Piece::capture() {
+    // TODO
+}
 
+
+bool Piece::move_to(Square& location) {
+    //FIXME
     bool result = false;
 
     // if the piece is on a square
