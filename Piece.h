@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <iostream>
+#include <ostream>
 
 class Square;
 
@@ -80,7 +81,7 @@ class Piece {
      * @param location the location of the square reference
      * @return true if the location is valid, false otherwise
      */
-    bool move_to(Square& location);
+    virtual bool move_to(Square& location);
 
 
     /**
@@ -89,8 +90,13 @@ class Piece {
      */
     virtual std::string str() const = 0;
 
-  private:
 
+    /**
+     * @brief Default destructor for piece
+     */
+    virtual ~Piece() = default;
+
+  private:
     const Piece::Color _color;
     Square* _location = nullptr;
 };

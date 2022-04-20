@@ -25,7 +25,36 @@ class Board {
      */
     Square& square_at(size_t rank, size_t file) const;
 
-    
+    /**
+     * @brief Return true if the rank is valid
+     *
+     * @param from the starting square
+     * @param to the ending square
+     * @return true if the rank is valid
+     */
+    bool is_valid_rank(const Square& from, const Square& to) const;
+
+
+    /**
+     * @brief Return true if the file is valid
+     *
+     * @param from the starting square
+     * @param to the ending square
+     * @return true if the file is valid
+     */
+    bool is_valid_file(const Square& from, const Square& to) const;
+
+
+    /**
+     * @brief Return true if the rank and file is valid
+     *
+     * @param from the starting square
+     * @param to the ending square
+     * @return true if the rank and file is valid
+     */
+    bool is_valid_diag(const Square& from, const Square& to) const;
+
+
     /**
      * @brief Checks if the row/rank is clear
      *

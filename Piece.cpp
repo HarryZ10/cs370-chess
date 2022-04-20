@@ -5,6 +5,7 @@
 
 using std::cout;
 using std::to_string;
+using std::ostream;
 
 
 Piece::Color Piece::color() const {
@@ -60,4 +61,10 @@ bool Piece::move_to(Square& location) {
     }
 
     return result;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Piece& piece) {
+    os << piece.str();
+    return os;
 }

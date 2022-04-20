@@ -1,25 +1,6 @@
-#include "Board.h"
-#include "Piece.h"
-#include "Square.h"
-#include "King.h"
-#include "Queen.h"
-#include "Rook.h"
-#include "Bishop.h"
-#include "Knight.h"
-#include "Pawn.h"
-
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cmath>
-
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
+#include "Chess.h"
 
 int main() {
-
     Board board = Board();
 
     King *white_king = new King(Piece::Color::white, board.square_at(0, 4));
@@ -55,16 +36,4 @@ int main() {
         black_pawns.push_back(new Pawn(Piece::Color::black, board.square_at(6, i)));
     }
 
-    // // move the white king to the square at (3, 4)
-    // white_king->Piece::move_to(board.square_at(1, 4));
-
-    // set queen to square at (2, 3)
-
-    // white_pawns[5]->Piece::move_to(board.square_at(2, 5));
-    std::cout << board << std::endl;
-
-    std::cout << "2,0 occupied? " << board.square_at(2, 0).is_occupied() << std::endl;
-    std::cout << "3,0 occupied? " << board.square_at(3, 0).is_occupied() << std::endl;
-    std::cout << "1,0 occupied? " << board.square_at(1, 0).is_occupied() << std::endl;
-    std::cout << board.is_clear_rank(board.square_at(1, 1), board.square_at(1, 7)) << std::endl;
 }
