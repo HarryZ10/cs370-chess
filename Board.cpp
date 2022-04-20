@@ -40,7 +40,7 @@ bool Board::is_clear_rank(const Square& from, const Square& to) const {
     // Each of the squares from the specified square to the other specified
     // square are unoccupied by a piece
     
-    for (size_t file = from.file(); file <= to.file(); file++) {
+    for (size_t file = from.file() + 1; file <= to.file(); file++) {
         if (this->_squares[from.rank()][file]->is_occupied()) {
             result = false;
             break;
