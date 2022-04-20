@@ -25,6 +25,7 @@ int main() {
     King *white_king = new King(Piece::Color::white, board.square_at(0, 4));
     Queen *white_queen = new Queen(Piece::Color::white, board.square_at(0, 3));
     Rook *white_rook_1 = new Rook(Piece::Color::white, board.square_at(0, 0));
+    Rook *white_rook_3 = new Rook(Piece::Color::white, board.square_at(1, 0));
     Rook *white_rook_2 = new Rook(Piece::Color::white, board.square_at(0, 7));
     Bishop *white_bishop_1 = new Bishop(Piece::Color::white, board.square_at(0, 2));
     Bishop *white_bishop_2 = new Bishop(Piece::Color::white, board.square_at(0, 5));
@@ -64,5 +65,6 @@ int main() {
 
     std::cout << "2,0 occupied? " << board.square_at(2, 0).is_occupied() << std::endl;
     std::cout << "3,0 occupied? " << board.square_at(3, 0).is_occupied() << std::endl;
-    std::cout << board.is_clear_diag(board.square_at(0, 2), board.square_at(5, 7)) << std::endl;
+    std::cout << "1,0 occupied? " << board.square_at(1, 0).is_occupied() << std::endl;
+    std::cout << board.is_clear_file(board.square_at(1, 0), board.square_at(1, 7)) << std::endl;
 }
