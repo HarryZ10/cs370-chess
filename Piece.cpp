@@ -61,3 +61,9 @@ bool Piece::move_to(Square& location) {
 
     return result;
 }
+
+
+std::ostream& operator<<(std::ostream& os, const Piece& piece) {
+    os << piece.str();
+    return os;
+}
