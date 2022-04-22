@@ -1,39 +1,79 @@
+
+#include <iostream>
 #include "Chess.h"
+#include "Player.h"
+
+using std::cout;
+using std::endl;
 
 int main() {
+
+    // turns
+    int turn = 0;
+    bool game_over = false;
+
+    // Create a board.
     Board board = Board();
 
-    King *white_king = new King(Piece::Color::white, board.square_at(0, 4));
-    Queen *white_queen = new Queen(Piece::Color::white, board.square_at(0, 3));
-    Rook *white_rook_1 = new Rook(Piece::Color::white, board.square_at(0, 0));
-    Rook *white_rook_3 = new Rook(Piece::Color::white, board.square_at(1, 0));
-    Rook *white_rook_2 = new Rook(Piece::Color::white, board.square_at(0, 7));
-    Bishop *white_bishop_1 = new Bishop(Piece::Color::white, board.square_at(0, 2));
-    Bishop *white_bishop_2 = new Bishop(Piece::Color::white, board.square_at(0, 5));
-    Knight *white_knight_1 = new Knight(Piece::Color::white, board.square_at(0, 1));
-    Knight *white_knight_2 = new Knight(Piece::Color::white, board.square_at(0, 6));
+    // Create the black player and the white player, which should effectively
+    // lead to the creation of all the black and white pieces and place them all on the board.
+    Player black_player = Player(Piece::Color::black, board);
+    Player white_player = Player(Piece::Color::white, board);
 
-    // makea list of white pawns
-    std::vector<Pawn*> white_pawns;
+    while (!game_over) {
+        // print board to stdout
+        std::cout << board << std::endl;
 
-    // for (int i = 0; i < 8; i++) {
-    //     white_pawns.push_back(new Pawn(Piece::Color::white, board.square_at(1, i)));
-    // }
+        // prompt user for move (e.g., "a2 a4") on stdin
+        std::string from_square, to_square;
+        std::cout << "Enter your move: ";
+        std::cin >> from_square >> to_square;
 
-    King *black_king = new King(Piece::Color::black, board.square_at(7, 3));
-    Queen *black_queen = new Queen(Piece::Color::black, board.square_at(7, 4));
-    Rook *black_rook_1 = new Rook(Piece::Color::black, board.square_at(7, 0));
-    Rook *black_rook_2 = new Rook(Piece::Color::black, board.square_at(7, 7));
-    Bishop *black_bishop_1 = new Bishop(Piece::Color::black, board.square_at(7, 2));
-    Bishop *black_bishop_2 = new Bishop(Piece::Color::black, board.square_at(7, 5));
-    Knight *black_knight_1 = new Knight(Piece::Color::black, board.square_at(7, 1));
-    Knight *black_knight_2 = new Knight(Piece::Color::black, board.square_at(7, 6));
+        // instruct current player object to try to make the corresponding move
+        if (turn % 2 == 0) {
+            if (!black_player.make_move(from_square, to_square)) {
+                std::cout << "Invalid move." << std::endl;
 
-    // make a list of black pawns
-    std::vector<Pawn*> black_pawns;
+                // repeat until a valid move is made
+                continue;
+            } else {
+                turn++;
+            }
+        } else {
+            if (!white_player.make_move(from_square, to_square)) {
+                std::cout << "Invalid move." << std::endl;
 
-    for (int i = 0; i < 8; i++) {
-        black_pawns.push_back(new Pawn(Piece::Color::black, board.square_at(6, i)));
+                // repeat until a valid move is made
+                continue;
+            } else {
+                turn++;
+            }
+        }
+        
+        // check if game is over (20 turns)
+        if (turn == 20) {
+            game_over = true;
+        }
     }
 
+    std::cout << "Game over." << std::endl;
+
+    // print board to stdout
+    std::cout << board << std::endl;
+
+    // print winner to stdout
+    if (black_player.piece_value() > white_player.piece_value()) {
+        std::cout << "Black wins!" << std::endl;
+    } else if (black_player.piece_value() < white_player.piece_value()) {
+        std::cout << "White wins!" << std::endl;
+    } else {
+        std::cout << "It's a tie!" << std::endl;
+    }
+
+    // delete all pieces
+    black_player.~Player();
+    white_player.~Player();
+
+    // delete board
+    board.~Board();
 }

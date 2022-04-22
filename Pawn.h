@@ -33,10 +33,21 @@ class Pawn : public Piece {
 
 
     /**
+     * @brief Moves the piece to the specified location
+     * @param location
+     * @return true if it has moved, otherwise false
+     */
+    bool move_to(Square& location) override;
+
+
+    /**
      * @brief Returns the string representation for the piece
      * @return the string representaiton of the object piece 
      */
     std::string str() const override;
+
+  private:
+    bool _moved = false;
 };
 
 #endif

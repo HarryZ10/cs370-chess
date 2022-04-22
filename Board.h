@@ -21,9 +21,19 @@ class Board {
      *
      * @param rank the row of the board
      * @param file the col of the board
-     * @return the  reference of the Square at rank and file
+     * @return the reference of the Square at rank and file
      */
     Square& square_at(size_t rank, size_t file) const;
+
+
+    /**
+     * @brief Translate pair to the rank/file indexing of the board
+     *
+     * @param pair the coordinates using Chess style notation (i.e "a1")
+     * @return the square reference at the rank and file
+     */
+    Square& square_at(std::string pair) const;
+
 
     /**
      * @brief Return true if the rank is valid

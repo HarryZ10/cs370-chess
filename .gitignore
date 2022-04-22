@@ -8,6 +8,11 @@
 # CMake
 cmake-build-*/
 
+# VSCode
 .vscode/
+
+# G++
 main.dSYM/
 main.o.dSYM
+*.dSYM/
+*.o.dSYM

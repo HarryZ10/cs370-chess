@@ -39,13 +39,19 @@ bool Piece::is_on_square() const {
 }
 
 
-bool Piece::capture() {
-    // TODO
+void Piece::capture() {
+    
+    // if the piece is on a square, remove it from the square
+    if (this->is_on_square()) {
+        this->location()->set_occupant(nullptr);
+    }
+
+    // set the piece's location to null
+    this->_location = nullptr;
 }
 
 
 bool Piece::move_to(Square& location) {
-    //FIXME
     bool result = false;
 
     // if the piece is on a square

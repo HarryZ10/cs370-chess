@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <ostream>
+#include <unordered_map>
 
 #include "Board.h"
 #include "Piece.h"
@@ -9,6 +10,7 @@
 using std::vector;
 using std::ostream;
 using std::basic_ostream;
+using std::unordered_map;
 
 Board::Board() {
     for (size_t rank = 0; rank < SIZE; rank++) {
@@ -33,13 +35,32 @@ Square& Board::square_at(size_t rank, size_t file) const {
 };
 
 
+Square& Board::square_at(std::string pair) const {
+
+    static std::unordered_map<char, int> rank_map = {
+        {'1', 0}, {'2', 1}, {'3', 2}, {'4', 3}, {'5', 4},
+        {'6', 5}, {'7', 6}, {'8', 7}
+    };
+
+    static std::unordered_map<char, int> file_map = {
+        {'a', 0}, {'b', 1}, {'c', 2}, {'d', 3}, {'e', 4},
+        {'f', 5}, {'g', 6}, {'h', 7}
+    };
+
+    size_t rank = rank_map[pair.at(1)];
+    size_t file = file_map[pair.at(0)];
+
+    return *this->_squares[rank][file];
+}
+
+
 bool Board::is_clear_rank(const Square& from, const Square& to) const {
     bool result = false;
 
     // The corresponding rank is actually a valid rank
     // Each of the squares from the specified square to the other specified
     // square are unoccupied by a piece
-    
+
     for (size_t file = from.file() + 1; file <= to.file(); file++) {
         if (this->_squares[from.rank()][file]->is_occupied()) {
             result = false;
