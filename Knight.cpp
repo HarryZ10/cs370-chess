@@ -37,5 +37,5 @@ bool Knight::can_move_to(const Square& location) const {
 }
 
 std::string Knight::str() const {
-    return this->color() == Piece::Color::white ? "♞" : "♘";
+    return this->color() == Piece::Color::black ? "♞" : "♘";
 }

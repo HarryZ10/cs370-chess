@@ -80,5 +80,5 @@ bool Pawn::move_to(Square& location) {
 }
 
 std::string Pawn::str() const {
-    return this->color() == Piece::Color::white ? "♟" : "♙";
+    return this->color() == Piece::Color::black ? "♟" : "♙";
 }
