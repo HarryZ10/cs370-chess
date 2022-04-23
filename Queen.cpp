@@ -27,5 +27,5 @@ bool Queen::can_move_to(const Square& location) const {
 }
 
 std::string Queen::str() const {
-    return this->color() == Piece::Color::white ? "♛" : "♕";
+    return this->color() == Piece::Color::black ? "♛" : "♕";
 }

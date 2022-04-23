@@ -26,5 +26,5 @@ bool Rook::can_move_to(const Square& location) const {
 }
 
 std::string Rook::str() const {
-    return this->color() == Piece::Color::white ? "♜" : "♖";
+    return this->color() == Piece::Color::black ? "♜" : "♖";
 }

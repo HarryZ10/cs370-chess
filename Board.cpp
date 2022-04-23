@@ -88,17 +88,20 @@ bool Board::is_clear_diag(const Square& from, const Square& to) const {
 
 std::ostream& operator<<(std::ostream& os, const Board& board) {
 
-    // print a b c d e f g h
     os << "\x1b[33m  ┃ a   b   c   d   e   f   g   h ┃" << std::endl;
     os << "\x1b[33m ━╋━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━╋━" << std::endl;
     // print 8
-    for (size_t rank = 8; rank > 0; rank--) {
-        os << "\x1b[33m" << rank << "\x1b[33m ┃ ";
-        for (size_t file = 0; file < 8; file++) {
-            os << "\x1b[0m" << board.square_at(rank - 1, file);
+    for (size_t rank = 0; rank < SIZE; rank++) {
+
+        os << "\x1b[33m" << SIZE - rank << "\x1b[33m ┃ ";
+
+        for (size_t file = 0; file < SIZE; file++) {
+            os << "\x1b[0m" << board.square_at(rank, file);
             os << "\x1b[33m ┃ ";
         }
-        os << rank << std::endl;
+
+        os << SIZE - rank << std::endl;
+
         os << "\x1b[33m ━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━" << std::endl;
     }
 
