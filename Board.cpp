@@ -115,16 +115,16 @@ std::ostream& operator<<(std::ostream& os, const Board& board) {
     os << "\x1b[33m  ┃ a   b   c   d   e   f   g   h ┃" << std::endl;
     os << "\x1b[33m ━╋━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━╋━" << std::endl;
     // print 8
-    for (size_t rank = 0; rank < SIZE; rank++) {
+    for (size_t rank = 0; rank < Board::SIZE; rank++) {
 
-        os << "\x1b[33m" << 8 - rank << "\x1b[33m ┃ ";
+        os << "\x1b[33m" << Board::SIZE - rank << "\x1b[33m ┃ ";
 
-        for (size_t file = 0; file < SIZE; file++) {
+        for (size_t file = 0; file < Board::SIZE; file++) {
             os << "\x1b[0m" << board.square_at(rank, file);
             os << "\x1b[33m ┃ ";
         }
 
-        os << SIZE - rank << std::endl;
+        os << Board::SIZE - rank << std::endl;
         os << "\x1b[33m ━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━" << std::endl;
     }
 

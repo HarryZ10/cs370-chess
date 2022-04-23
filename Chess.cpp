@@ -7,10 +7,8 @@ using std::cout;
 using std::endl;
 
 int main() {
-
     // turns
     int turn = 0;
-    bool game_over = false;
 
     // Create a board.
     Board board = Board();
@@ -20,7 +18,9 @@ int main() {
     Player black_player = Player(Piece::Color::black, board);
     Player white_player = Player(Piece::Color::white, board);
 
-    while (!game_over) {
+    // 20 turns complete gameplay for grading purposes
+    while (turn == 20) {
+
         // print board to stdout
         std::cout << board << std::endl;
 
@@ -28,35 +28,22 @@ int main() {
         std::string from_square, to_square;
         std::cout << "Enter your move: ";
         std::cin >> from_square >> to_square;
-        // from_square = "a2";
-        // to_square = "a4";
 
         // instruct current player object to try to make the corresponding move
         if (turn % 2 == 0) {
-            if (!black_player.make_move(from_square, to_square)) {
-                std::cout << "Invalid move." << std::endl;
 
-                // repeat until a valid move is made
-                continue;
-            } else {
+            if (white_player.make_move(from_square, to_square)) {
                 turn++;
+            } else {
+                std::cout << "Invalid move." << std::endl;
             }
+
         } else {
-            if (!white_player.make_move(from_square, to_square)) {
-                std::cout << "Invalid move." << std::endl;
-
-                // repeat until a valid move is made
-                continue;
-            } else {
+            if (black_player.make_move(from_square, to_square)) {
                 turn++;
+            } else {
+                std::cout << "Invalid move." << std::endl;
             }
-        }
-        std::cout << black_player.piece_value() << std::endl;
-        std::cout << white_player.piece_value() << std::endl;
-
-        // check if game is over (20 turns)
-        if (turn == 20 || black_player.piece_value() < 200 || white_player.piece_value() < 200) {
-            game_over = true;
         }
     }
 
