@@ -21,6 +21,8 @@ using std::string;
 int main() {
 
     Board board = Board();
+    std::cout << board.is_clear_diag(board.square_at(0, 0), board.square_at(7, 7)) << std::endl;
+
 
     King *black_king = new King(Piece::Color::black, board.square_at(0, 4));
     Queen *black_queen = new Queen(Piece::Color::black, board.square_at(0, 3));
@@ -46,6 +48,5 @@ int main() {
 
     // set queen to square at (2, 3)
 
-    black_rook_1->Piece::move_to(board.square_at(5, 0));
-    std::cout << board << std::endl;
+    std::cout << board.is_clear_diag(board.square_at(0, 0), board.square_at(7, 7)) << std::endl;
 }
