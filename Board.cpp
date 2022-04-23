@@ -36,10 +36,10 @@ Square& Board::square_at(size_t rank, size_t file) const {
 
 
 Square& Board::square_at(std::string pair) const {
-
+    // a7 -> rank = 1, file = 0
     static std::unordered_map<char, int> rank_map = {
-        {'1', 0}, {'2', 1}, {'3', 2}, {'4', 3}, {'5', 4},
-        {'6', 5}, {'7', 6}, {'8', 7}
+        {'8', 0}, {'7', 1}, {'6', 2}, {'5', 3},
+        {'4', 4}, {'3', 5}, {'2', 6}, {'1', 7}
     };
 
     static std::unordered_map<char, int> file_map = {
@@ -47,8 +47,10 @@ Square& Board::square_at(std::string pair) const {
         {'f', 5}, {'g', 6}, {'h', 7}
     };
 
-    size_t rank = rank_map[pair.at(1)];
     size_t file = file_map[pair.at(0)];
+    size_t rank = rank_map[pair.at(1)];
+
+    std::cout << pair.at(0) << " " << pair.at(1) << std::endl;
 
     return *this->_squares[rank][file];
 }
@@ -96,7 +98,8 @@ bool Board::is_clear_diag(const Square& from, const Square& to) const {
 
     // The corresponding diagonal is actually a valid diagonal
     // Each of the squares from the specified square to the other specified
-    for (size_t rank = from.rank() + 1, file = from.file() + 1; rank <= to.rank() && file <= to.file(); rank++, file++) {
+    for (size_t rank = from.rank() + 1, file = from.file() + 1; rank <= to.rank()
+        && file <= to.file(); rank++, file++) {
         if (this->_squares[rank][file]->is_occupied()) {
             result = false;
             break;
@@ -109,17 +112,19 @@ bool Board::is_clear_diag(const Square& from, const Square& to) const {
 
 std::ostream& operator<<(std::ostream& os, const Board& board) {
 
-    // print a b c d e f g h
     os << "\x1b[33m  ┃ a   b   c   d   e   f   g   h ┃" << std::endl;
     os << "\x1b[33m ━╋━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━┳━━━╋━" << std::endl;
     // print 8
-    for (size_t rank = 8; rank > 0; rank--) {
-        os << "\x1b[33m" << rank << "\x1b[33m ┃ ";
-        for (size_t file = 0; file < 8; file++) {
-            os << "\x1b[0m" << board.square_at(rank - 1, file);
+    for (size_t rank = 0; rank < SIZE; rank++) {
+
+        os << "\x1b[33m" << 8 - rank << "\x1b[33m ┃ ";
+
+        for (size_t file = 0; file < SIZE; file++) {
+            os << "\x1b[0m" << board.square_at(rank, file);
             os << "\x1b[33m ┃ ";
         }
-        os << rank << std::endl;
+
+        os << SIZE - rank << std::endl;
         os << "\x1b[33m ━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━━━╋━" << std::endl;
     }
 

@@ -28,6 +28,8 @@ int main() {
         std::string from_square, to_square;
         std::cout << "Enter your move: ";
         std::cin >> from_square >> to_square;
+        // from_square = "a2";
+        // to_square = "a4";
 
         // instruct current player object to try to make the corresponding move
         if (turn % 2 == 0) {
@@ -49,9 +51,9 @@ int main() {
                 turn++;
             }
         }
-        
+
         // check if game is over (20 turns)
-        if (turn == 20) {
+        if (turn == 20 || black_player.piece_value() < 200 || white_player.piece_value() < 200) {
             game_over = true;
         }
     }
@@ -69,11 +71,4 @@ int main() {
     } else {
         std::cout << "It's a tie!" << std::endl;
     }
-
-    // delete all pieces
-    black_player.~Player();
-    white_player.~Player();
-
-    // delete board
-    board.~Board();
 }

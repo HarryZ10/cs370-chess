@@ -4,12 +4,11 @@
 #include <iostream>
 #include "Square.h"
 
+static const size_t SIZE = 8;
+
 class Board {
 
   public:
-
-    static const size_t SIZE = 8;
-
     /**
      * @brief Construct a new Board object
      */
