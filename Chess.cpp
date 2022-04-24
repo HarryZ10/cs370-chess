@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "Chess.h"
 #include "Player.h"
@@ -9,6 +8,7 @@ using std::endl;
 int main() {
     // turns
     int turn = 0;
+    bool game_over = false;
 
     // Create a board.
     Board board = Board();
@@ -18,8 +18,7 @@ int main() {
     Player black_player = Player(Piece::Color::black, board);
     Player white_player = Player(Piece::Color::white, board);
 
-    // 20 turns complete gameplay for grading purposes
-    while (turn == 20) {
+    while (!game_over) {
 
         // print board to stdout
         std::cout << board << std::endl;
@@ -31,19 +30,29 @@ int main() {
 
         // instruct current player object to try to make the corresponding move
         if (turn % 2 == 0) {
-
-            if (white_player.make_move(from_square, to_square)) {
-                turn++;
-            } else {
+            if (!white_player.make_move(from_square, to_square)) {
                 std::cout << "Invalid move." << std::endl;
-            }
 
+                // repeat until a valid move is made
+                // this continues to the next iteration
+                continue;
+            } else {
+                turn++;
+            }
         } else {
-            if (black_player.make_move(from_square, to_square)) {
-                turn++;
-            } else {
+            if (!black_player.make_move(from_square, to_square)) {
                 std::cout << "Invalid move." << std::endl;
+
+                // repeat until a valid move is made
+                continue;
+            } else {
+                turn++;
             }
+        }
+
+        // check if game is over (20 turns)
+        if (turn == 20 || black_player.piece_value() < 200 || white_player.piece_value() < 200) {
+            game_over = true;
         }
     }
 

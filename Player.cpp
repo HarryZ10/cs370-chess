@@ -7,8 +7,10 @@
 #include "Pawn.h"
 
 Player::Player(Piece::Color color, const Board& board): _color(color), _board(board) {
+
     // if color is white, setup the pieces on the board
     if (color == Piece::Color::black) {
+
         // setup the pawns
         for (size_t i = 0; i < 8; i++) {
             this->_pieces.push_back(new Pawn(Piece::Color::black, board.square_at(1, i)));
@@ -31,7 +33,9 @@ Player::Player(Piece::Color color, const Board& board): _color(color), _board(bo
         this->_king = new King(Piece::Color::black, board.square_at(0, 4));
 
         this->_pieces.push_back(this->_king);
+
     } else {
+
         // setup the pawns
         for (size_t i = 0; i < 8; i++) {
             this->_pieces.push_back(new Pawn(Piece::Color::white, board.square_at(6, i)));
@@ -66,32 +70,158 @@ Piece::Color Player::color() const {
 bool Player::make_move(const std::string& from, const std::string& to) {
     bool result = false;
 
+    Square from_sqr = this->_board.square_at(from);
+    Square to_sqr = this->_board.square_at(to);
+
     // The "from" square should be occupied by a piece of the same color as the player (the "piece").
-    if (this->_board.square_at(from).is_occupied() && this->_board.square_at(from).occupant()->color() == this->_color) {
+    if (from_sqr.is_occupied() && from_sqr.occupant()->color() == this->_color) {
 
-        // get occupant of from square
-        // If the piece reports that it can move to the "to" square,
-        if (this->_board.square_at(from).occupant()->can_move_to(this->_board.square_at(to))) {
-
-            // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
-            if (!this->_board.square_at(to).is_occupied()) {
-
-                // move piece to "to" square
-                this->_board.square_at(from).occupant()->move_to(this->_board.square_at(to));
-                result = true;
+        // if from is a bishop, check if the move is diagonal
+        if (from_sqr.occupant()->str() == "♗" || from_sqr.occupant()->str() == "♝") {
+            if (this->_board.is_valid_diag(from_sqr, to_sqr)) {
+                
+                if (from_sqr.occupant()->can_move_to(to_sqr)) {
+                    // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
+                    if (this->_board.is_clear_diag(from_sqr, to_sqr)) {
+                        // move piece to "to" square
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                    else if(to_sqr.occupant()->color() != this->_color){
+                        // capture
+                        // check for different types of pieces
+                        to_sqr.occupant()->capture();
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                }
             }
-            else if(this->_board.square_at(to).occupant()->color() != this->_color){
-
-                // capture
-                this->_board.square_at(to).occupant()->capture();
-                this->_board.square_at(from).occupant()->move_to(this->_board.square_at(to));
-                result = true;
-            }
-       
-
         }
-    }
+        // if rook, check is_valid_rank or is_valid_file
+        else if (from_sqr.occupant()->str() == "♖" || from_sqr.occupant()->str() == "♜") {
+            if (this->_board.is_valid_rank(from_sqr, to_sqr) || this->_board.is_valid_file(from_sqr, to_sqr)) {
+                if (from_sqr.occupant()->can_move_to(to_sqr)) {
+                    // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
+                    if (this->_board.is_clear_file(from_sqr, to_sqr)) {
+                        // move piece to "to" square
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                    else if (this->_board.is_clear_rank(from_sqr, to_sqr)) {
+                        // move piece to "to" square
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                    else if(to_sqr.occupant()->color() != this->_color) {
+                        // capture
+                        // check for different types of pieces
+                        to_sqr.occupant()->capture();
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
 
+                    std::cout << this->_board.is_clear_file(from_sqr, to_sqr) << std::endl;
+                    std::cout << this->_board.is_clear_rank(from_sqr, to_sqr) << std::endl;
+                }
+            }
+        }
+        // if queen, check is_valid_diag or is_valid_rank or is_valid_file
+        else if (from_sqr.occupant()->str() == "♕" || from_sqr.occupant()->str() == "♛") {
+            if (this->_board.is_valid_diag(from_sqr, to_sqr)
+                || this->_board.is_valid_rank(from_sqr, to_sqr)
+                || this->_board.is_valid_file(from_sqr, to_sqr)) {
+
+                if (from_sqr.occupant()->can_move_to(to_sqr)) {
+                    // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
+                    if (this->_board.is_clear_diag(from_sqr, to_sqr)
+                        || this->_board.is_clear_rank(from_sqr, to_sqr)
+                        || this->_board.is_clear_file(from_sqr, to_sqr)) {
+
+                        // move piece to "to" square
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                    else if(to_sqr.occupant()->color() != this->_color) {
+                        // capture
+                        // check for different types of pieces
+                        to_sqr.occupant()->capture();
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                }
+            }
+        // if king, check is_valid_diag or is_valid_rank or is_valid_file
+        } else if (from_sqr.occupant()->str() == "♔" || from_sqr.occupant()->str() == "♚") {
+            if (this->_board.is_valid_diag(from_sqr, to_sqr)
+                || this->_board.is_valid_rank(from_sqr, to_sqr)
+                || this->_board.is_valid_file(from_sqr, to_sqr)) {
+
+                if (from_sqr.occupant()->can_move_to(to_sqr)) {
+                    // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
+                    if (this->_board.is_clear_diag(from_sqr, to_sqr)
+                        || this->_board.is_clear_rank(from_sqr, to_sqr)
+                        || this->_board.is_clear_file(from_sqr, to_sqr)) {
+
+                        // move piece to "to" square
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                    else if(to_sqr.occupant()->color() != this->_color){
+                        // capture
+                        // check for different types of pieces
+                        to_sqr.occupant()->capture();
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                }
+            }
+        }
+        // if pawn, check is_valid_diag or is_valid_file
+        else if (from_sqr.occupant()->str() == "♙" || from_sqr.occupant()->str() == "♟") {
+
+            if (this->_board.is_valid_diag(from_sqr, to_sqr)
+                || this->_board.is_valid_file(from_sqr, to_sqr)) {
+
+                if (from_sqr.occupant()->can_move_to(to_sqr)) {
+
+                    // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
+                    if (this->_board.is_clear_diag(from_sqr, to_sqr)
+                        || this->_board.is_clear_file(from_sqr, to_sqr)) {
+
+                        // move piece to "to" square
+                        from_sqr.occupant()->move_to(to_sqr);
+
+                        result = true;
+                    }
+                    else if(to_sqr.occupant()->color() != this->_color){
+                        // capture
+                        // check for different types of pieces
+                        to_sqr.occupant()->capture();
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                }
+            }
+        } else {
+            // if knight
+            if (from_sqr.occupant()->str() == "♘" || from_sqr.occupant()->str() == "♞") {
+                if (!from_sqr.is_occupied()) {
+                    if (from_sqr.occupant()->can_move_to(to_sqr)) {
+                        // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                    else if(to_sqr.occupant()->color() != this->_color){
+                        // capture
+                        // check for different types of pieces
+                        to_sqr.occupant()->capture();
+                        from_sqr.occupant()->move_to(to_sqr);
+                        result = true;
+                    }
+                }
+            }
+        } 
+    }
     return result;
 }
 
