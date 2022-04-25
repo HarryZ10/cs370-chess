@@ -42,14 +42,25 @@ bool Board::is_clear_rank(const Square& from, const Square& to) const {
     // The corresponding rank is actually a valid rank
     // Each of the squares from the specified square to the other specified
     // square are unoccupied by a piece
-    
     if (from.rank() == to.rank()) {
-        for (size_t file = from.file() + 1; file <= to.file(); file++) {
-            if (this->_squares[from.rank()][file]->is_occupied()) {
-                result = false;
-                break;
-            } else {
-                result = true;
+        //if to is greater than from, increment from
+        if (to.file() > from.file()) {
+            for (size_t file = from.file() + 1; file <= to.file(); file++) {
+                if (this->_squares[from.rank()][file]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } else {
+            for (size_t file = from.file() - 1; file >= to.file(); file--) {
+                if (this->_squares[from.rank()][file]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
             }
         }
     }
@@ -60,15 +71,31 @@ bool Board::is_clear_rank(const Square& from, const Square& to) const {
 
 bool Board::is_clear_file(const Square& from, const Square& to) const {
 
-    bool result = true;
+    bool result = false;
+    int modifer = 0;
 
-    // The corresponding file is actually a valid file
-    // Each of the squares from the specified square to the other specified
+    // if black player, then modifer is +1
+    // if white player, then modifer is -1
+    modifer = (from.occupant()->color() == Piece::Color::black) ? 1 : -1;
+
     if (from.rank() == to.rank()) {
-        for (size_t rank = from.rank() + 1; rank <= to.rank(); rank++) {
-            if (this->_squares[rank][from.file()]->is_occupied()) {
-                result = false;
-                break;
+        if (from.occupant()->color() == Piece::Color::white) {
+            for (size_t rank = from.rank() - 1; rank >= to.rank(); rank--) {
+                if (this->_squares[rank][from.file()]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } else {
+            for (size_t rank = from.rank() + 1; rank <= to.rank(); rank++) {
+                if (this->_squares[rank][from.file()]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
             }
         }
     }
@@ -78,19 +105,49 @@ bool Board::is_clear_file(const Square& from, const Square& to) const {
 
 
 bool Board::is_clear_diag(const Square& from, const Square& to) const {
-    bool result = true;
-
+    bool result = false;
     // The corresponding diagonal is actually a valid diagonal
     // Each of the squares from the specified square to the other specified
-
+    // square are unoccupied by a piece
     if (std::abs(int(from.rank()) - int(to.rank())) == std::abs(int(from.file()) - int(to.file()))) {
-        for (size_t rank = from.rank() + 1, file = from.file() + 1;
-            rank <= to.rank() && file <= to.file();
-            rank++, file++) {
-
-            if (this->_squares[rank][file]->is_occupied()) {
-                result = false;
-                break;
+        
+        // if to.file() is greater than from.file() and to.rank() is greater than from.rank()
+        // then increment from.file() and from.rank()
+        if (to.file() > from.file() && to.rank() > from.rank()) {
+            for (size_t file = from.file() + 1, rank = from.rank() + 1; file <= to.file(); file++, rank++) {
+                if (this->_squares[rank][file]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } else if (to.file() < from.file() && to.rank() < from.rank()) {
+            for (size_t file = from.file() - 1, rank = from.rank() - 1; file >= to.file(); file--, rank--) {
+                if (this->_squares[rank][file]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } else if (to.file() > from.file() && to.rank() < from.rank()) {
+            for (size_t file = from.file() + 1, rank = from.rank() - 1; file <= to.file(); file++, rank--) {
+                if (this->_squares[rank][file]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } else if (to.file() < from.file() && to.rank() > from.rank()) {
+            for (size_t file = from.file() - 1, rank = from.rank() + 1; file >= to.file(); file--, rank++) {
+                if (this->_squares[rank][file]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
             }
         }
     }
