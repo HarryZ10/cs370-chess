@@ -61,19 +61,16 @@ bool Pawn::move_to(Square& location) {
     // if the piece is on a square
     if (this->is_on_square()) {
 
-        // if can be moved to the square
-        if (this->can_move_to(location)) {
+        // move the piece to the square
+        this->set_location(&location);
 
-            // move the piece to the square
-            this->set_location(&location);
-
-            // set the moved flag to true
-            if (!this->_moved) {
-                this->_moved = true;
-            }
-
-            result = true;
+        // set the moved flag to true
+        if (!this->_moved) {
+            this->_moved = true;
         }
+
+        result = true;
+
     }
 
     return result;

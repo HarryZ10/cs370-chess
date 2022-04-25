@@ -24,7 +24,9 @@ void Piece::set_location(Square* location) {
     Square* old_location = this->_location;
 
     location->set_occupant(this);
+    
     this->_location = location;
+
     this->location()->set_occupant(location->occupant());
 
     // if the old location is not null, remove the piece from it
@@ -56,11 +58,9 @@ bool Piece::move_to(Square& location) {
 
     // if the piece is on a square
     if (this->is_on_square()) {
-        if (this->can_move_to(location)) {
-            // move the piece to the square
-            this->set_location(&location);
-            result = true;
-        }
+        // move the piece to the square
+        this->set_location(&location);
+        result = true;
     }
 
     return result;

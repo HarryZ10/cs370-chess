@@ -56,61 +56,6 @@ Square& Board::square_at(std::string pair) const {
 }
 
 
-bool Board::is_clear_rank(const Square& from, const Square& to) const {
-    bool result = true;
-
-    // The corresponding rank is actually a valid rank
-    // Each of the squares from the specified square to the other specified
-    // square are unoccupied by a piece
-
-    for (size_t file = from.file() + 1; file <= to.file(); file++) {
-        if (this->_squares[from.rank()][file]->is_occupied()) {
-            result = false;
-            break;
-        }
-    }
-
-    return result;
-};
-
-
-bool Board::is_clear_file(const Square& from, const Square& to) const {
-
-    bool result = true;
-
-    // The corresponding file is actually a valid file
-    // Each of the squares from the specified square to the other specified
-    // if player white
-    for (size_t rank = from.rank(); rank <= to.rank(); rank++) {
-        if (this->_squares[rank][from.file()]->is_occupied()) {
-            result = false;
-            break;
-        }
-    }
-
-    return result;
-}
-
-
-bool Board::is_clear_diag(const Square& from, const Square& to) const {
-    bool result = true;
-
-    // The corresponding diagonal is actually a valid diagonal
-    // Each of the squares from the specified square to the other specified
-    // square are unoccupied by a piece
-    for (size_t rank = from.rank() + 1, file = from.file() + 1;
-         rank <= to.rank() && file <= to.file();
-         rank++, file++) {
-        if (this->_squares[rank][file]->is_occupied()) {
-            result = false;
-            break;
-        }
-    }
-
-    return result;
-}
-
-
 bool Board::is_valid_rank(const Square& from, const Square& to) const {
     return from.rank() == to.rank();
 }
@@ -123,6 +68,85 @@ bool Board::is_valid_file(const Square& from, const Square& to) const {
 
 bool Board::is_valid_diag(const Square& from, const Square& to) const {
     return std::abs(int(from.rank() - to.rank())) == std::abs(int(from.file() - to.file()));
+}
+
+
+bool Board::is_clear_rank(const Square& from, const Square& to) const {
+    bool result = false;
+
+    // The corresponding rank is actually a valid rank
+    // Each of the squares from the specified square to the other specified
+    // square are unoccupied by a piece
+    if (Board::is_valid_rank(from, to)) {
+        for (size_t file = from.file(); file <= to.file(); file++) {
+            if (this->_squares[from.rank()][file]->is_occupied()) {
+                result = false;
+                break;
+            } else {
+                result = true;
+            }
+        }
+    }
+
+    return result;
+};
+
+
+bool Board::is_clear_file(const Square& from, const Square& to) const {
+
+    bool result = false;
+    int modifer = 0;
+
+    // if black player, then modifer is +1
+    // if white player, then modifer is -1
+    modifer = (from.occupant()->color() == Piece::Color::black) ? 1 : -1;
+
+    if (Board::is_valid_file(from, to)) {
+        if (from.occupant()->color() == Piece::Color::white) {
+            for (size_t rank = from.rank() - 1; rank >= to.rank(); rank--) {
+                if (this->_squares[rank][from.file()]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        } else {
+            for (size_t rank = from.rank() + 1; rank <= to.rank(); rank++) {
+                if (this->_squares[rank][from.file()]->is_occupied()) {
+                    result = false;
+                    break;
+                } else {
+                    result = true;
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+
+bool Board::is_clear_diag(const Square& from, const Square& to) const {
+    bool result = false;
+    // The corresponding diagonal is actually a valid diagonal
+    // Each of the squares from the specified square to the other specified
+    // square are unoccupied by a piece
+    if (Board::is_valid_diag(from, to)) {
+        
+        for (size_t rank = from.rank(), file = from.file();
+             rank <= to.rank() && file <= to.file();
+             rank++, file++) {
+            if (this->_squares[rank][file]->is_occupied()) {
+                result = false;
+                break;
+            } else {
+                result = true;
+            }
+        }
+    }
+
+    return result;
 }
 
 
