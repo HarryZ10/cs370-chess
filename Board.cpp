@@ -49,9 +49,6 @@ Square& Board::square_at(std::string pair) const {
 
     size_t file = file_map[pair.at(0)];
     size_t rank = rank_map[pair.at(1)];
-
-    std::cout << pair.at(0) << " " << pair.at(1) << std::endl;
-
     return *this->_squares[rank][file];
 }
 

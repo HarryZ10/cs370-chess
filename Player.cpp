@@ -76,16 +76,16 @@ bool Player::make_move(const std::string& from, const std::string& to) {
     // The "from" square should be occupied by a piece of the same color as the player (the "piece").
     if (from_sqr.is_occupied() && from_sqr.occupant()->color() == this->color()) {
         
-        if (this->_board.is_valid_rank(from_sqr, to_sqr)
+        if ((this->_board.is_valid_rank(from_sqr, to_sqr)
             || this->_board.is_valid_file(from_sqr, to_sqr)
-            || this->_board.is_valid_diag(from_sqr, to_sqr)) {
+            || this->_board.is_valid_diag(from_sqr, to_sqr) || from_sqr.occupant()->value() == 3)) {
 
             if (from_sqr.occupant()->can_move_to(to_sqr)) {
 
                 // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
-                if (this->_board.is_clear_diag(from_sqr, to_sqr)
+                if ((this->_board.is_clear_diag(from_sqr, to_sqr)
                     || this->_board.is_clear_rank(from_sqr, to_sqr)
-                    || this->_board.is_clear_file(from_sqr, to_sqr)) {
+                    || this->_board.is_clear_file(from_sqr, to_sqr) || from_sqr.occupant()->value() == 3)) {
 
                     // move piece to "to" square
                     this->_board.square_at(from).occupant()->move_to(this->_board.square_at(to));
@@ -95,7 +95,7 @@ bool Player::make_move(const std::string& from, const std::string& to) {
                 else if (to_sqr.is_occupied() && to_sqr.occupant()->color() != this->color()) {
                     // capture
                     // check for different types of pieces
-                    this->_board.square_at(from).occupant()->capture();
+                    this->_board.square_at(to).occupant()->capture();
                     this->_board.square_at(from).occupant()->move_to(this->_board.square_at(to));
                     result = true;
                 }
