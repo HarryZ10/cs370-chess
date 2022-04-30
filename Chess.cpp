@@ -51,10 +51,13 @@ int main() {
         }
 
         // check if game is over (20 turns)
-        if (turn == 20 || black_player.piece_value() < 200 || white_player.piece_value() < 200) {
+        if (turn == 5 || black_player.piece_value() < 200 || white_player.piece_value() < 200) {
             game_over = true;
         }
     }
+
+    std::cout << black_player.piece_value() << std::endl;
+    std::cout << white_player.piece_value() << std::endl;
 
     std::cout << "Game over." << std::endl;
 

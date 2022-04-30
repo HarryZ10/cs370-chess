@@ -78,13 +78,14 @@ bool Player::make_move(const std::string& from, const std::string& to) {
         
         if ((this->_board.is_valid_rank(from_sqr, to_sqr)
           || this->_board.is_valid_file(from_sqr, to_sqr)
-          || this->_board.is_valid_diag(from_sqr, to_sqr)) || from_sqr.occupant()->value() == 3) {
+          || this->_board.is_valid_diag(from_sqr, to_sqr)) || (from_sqr.occupant()->str() == "♘" || from_sqr.occupant()->str() == "♞")) {
 
             if (from_sqr.occupant()->can_move_to(to_sqr)) {
+
                 // The "to" square should be unoccupied, or occupied by a piece not of the same color (the "opponent piece").
                 if (((this->_board.is_clear_diag(from_sqr, to_sqr) && from_sqr.occupant()->value() != 1)
                   || this->_board.is_clear_rank(from_sqr, to_sqr)
-                  || this->_board.is_clear_file(from_sqr, to_sqr)) || from_sqr.occupant()->value() == 3) {
+                  || this->_board.is_clear_file(from_sqr, to_sqr)) || (from_sqr.occupant()->str() == "♘" || from_sqr.occupant()->str() == "♞")) {
 
                     // move piece to "to" square
                     this->_board.square_at(from).occupant()->move_to(this->_board.square_at(to));
@@ -93,20 +94,21 @@ bool Player::make_move(const std::string& from, const std::string& to) {
                 }
                 // if (isClear... or from is a pawn and the diagonal is clear,
                 // and to square is occupied and opponent color)
-                else if (((this->_board.is_clear_diag(from_sqr, to_sqr)
-                       || this->_board.is_clear_rank(from_sqr, to_sqr)
-                       || this->_board.is_clear_file(from_sqr, to_sqr)
-                       || (from_sqr.occupant()->value() == 1 && !this->_board.is_clear_diag(from_sqr, to_sqr))))
+                else if (
+                    ((from_sqr.occupant()->value() == 1 && !this->_board.is_clear_diag(from_sqr, to_sqr))
                        && to_sqr.is_occupied()
-                       && to_sqr.occupant()->color() != this->color()) {
+                       && to_sqr.occupant()->color() != this->color())
 
-                    std::cout << this->_board.is_clear_diag(from_sqr, to_sqr) << std::endl;
-                    std::cout << this->_board.is_clear_rank(from_sqr, to_sqr) << std::endl;
-                    std::cout << this->_board.is_clear_file(from_sqr, to_sqr) << std::endl;
-
+                    || ((from_sqr.occupant()->value() != 1)
+                       && to_sqr.is_occupied()
+                       && to_sqr.occupant()->color() != this->color())
+                    ) {
                     // capture
                     // check for different types of pieces
+                    // remove piece from _pieces
                     this->_board.square_at(to).occupant()->capture();
+                    delete this->_board.square_at(to).occupant();
+
                     this->_board.square_at(from).occupant()->move_to(this->_board.square_at(to));
                     result = true;
                 }
@@ -122,7 +124,12 @@ piece_value_t Player::piece_value() const {
     piece_value_t result = 0;
 
     for (Piece* piece : this->_pieces) {
-        result += piece->value();
+        
+        if (piece != nullptr) {
+            result += piece->value();
+        }
+
+        std::cout << piece->value() << piece->str() << std::endl;
     }
 
     return result;
@@ -131,6 +138,8 @@ piece_value_t Player::piece_value() const {
 
 Player::~Player() {
     for (Piece* piece : this->_pieces) {
-        delete piece;
+        if (piece != nullptr) {
+            delete piece;
+        }
     }
 }
