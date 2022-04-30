@@ -32,6 +32,11 @@ bool Pawn::can_move_to(const Square& location) const {
 
                     result = true;
                 }
+                // if attack
+                else if ((location.rank() == currentRef.rank() - 1)
+                      && std::abs(int(location.file()) - int(currentRef.file())) == 1) {  
+                    result = true;
+                }
 
             } else {
                 // else if the piece is black
@@ -40,6 +45,10 @@ bool Pawn::can_move_to(const Square& location) const {
                     result = true;
                 }
                 else if (location.rank() == currentRef.rank() + 1) {
+                    result = true;
+                }
+                else if ((location.rank() == currentRef.rank() + 1)
+                      && std::abs(int(location.file()) - int(currentRef.file())) == 1) {    
                     result = true;
                 }
             }
